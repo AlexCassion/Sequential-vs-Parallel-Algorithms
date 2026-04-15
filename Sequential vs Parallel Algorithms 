@@ -41,15 +41,15 @@ def parallel_merge_sort(data):
     while len(sorted_chunks) > 1:
         new_chunks = []
 
-    for i in range(0, len(sorted_chunks), 2):
-        if i + 1 < len(sorted_chunks):
-            new_chunks.append(merge(sorted_chunks[i], sorted_chunks[i+1]))
-        else:
-            new_chunks.append(sorted_chunks[i])
+        for i in range(0, len(sorted_chunks), 2):
+            if i + 1 < len(sorted_chunks):
+                new_chunks.append(merge(sorted_chunks[i], sorted_chunks[i+1]))
+            else:
+                new_chunks.append(sorted_chunks[i])
 
-sorted_chunks = new_chunks
+        sorted_chunks = new_chunks
 
-return sorted_chunks[0]
+    return sorted_chunks[0]
 
 def linear_search(data, target):
     for i in range(len(data)):
