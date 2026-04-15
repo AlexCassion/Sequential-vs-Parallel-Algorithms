@@ -70,7 +70,7 @@ def parallel_search(data, target):
 
     chunk_size = len(data) // 4
 
-     for i in range(4):
+    for i in range(4):
         start = i * chunk_size
         end = len(data) if i == 3 else (i + 1) * chunk_size
         p = Process(target=worker, args=(data[start:end], target, q, start))
@@ -88,3 +88,41 @@ def parallel_search(data, target):
 
     return -1
 
+if __name__ == "__main__":
+    sizes = [1000, 100000, 1000000]
+
+    for n in sizes:
+        data = generate_data(n)
+        target = data[n // 2]
+
+        start = time.time()
+        merge_sort(data.copy())
+        end = time.time()
+        print("Sequential Sort Time: ", n, end - start)
+
+        start = time.time()
+        parallel_merge_sort(data.copy())
+        end = time.time()
+        print("Dataset =", n, "Parallel Sort Time: ", end - start)
+
+        start = time.time()
+        linear_search(data, target)
+        end = time.time()
+        print("Dataset =", n, "Sequential Search Time: ", end - start)
+
+        start = time.time()
+        parallel_search(data, target)
+        end = time.time()
+        print("Dataset =", n, "Parallel Search Time: ", end - start)
+
+    data = list(range(100000))
+
+    start = time.time()
+    merge_sort(data.copy())
+    end = time.time()
+    print("Sorted Case Sequential Sort Time: ", end - start)
+
+    start = time.time()
+    parallel_merge_sort(data.copy())
+    end = time.time()
+    print("Sorted Case Parallel Sort Time: ", end - start)
