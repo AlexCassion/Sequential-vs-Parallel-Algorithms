@@ -63,3 +63,28 @@ def worker(sub_data, target, q, offset):
             q.put(i + offset)
             return
     q.put(-1)
+
+def parallel_search(data, target):
+    q = Queue()
+    processes = []
+
+    chunk_size = len(data) // 4
+
+     for i in range(4):
+        start = i * chunk_size
+        end = len(data) if i == 3 else (i + 1) * chunk_size
+        p = Process(target=worker, args=(data[start:end], target, q, start))
+        processes.append(p)
+        p.start()
+
+    results = [q.get() for _ in range(4)]
+
+    for p in processes:
+        p.join()
+
+    for r in results:
+        if r != -1:
+            return r
+
+    return -1
+
